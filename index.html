@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitalis - Blockchain Healthcare</title>
+    <!-- Load React and Babel for JSX in the browser -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Link to the Inter font used by Tailwind components -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Optional: Set a global font-family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. This is the root element where your React app will render -->
+    <div id="root"></div>
+
+    <!-- 2. Your React component code goes inside a script tag with type="text/babel" -->
+    <script type="text/babel">
+// The contents of your App.jsx file will go here.
+// Please copy the entire content of your App.jsx file and paste it below this line.
+
+import React from "react";
+// All lucide icons imported from the top
+import { ArrowRight, Shield, Calendar, Lock, Zap, CheckCircle, Users, Bell, Clock, Eye } from "lucide-react";
+
+// --- Mock Button Component Definition ---
+// Since the original import pointed to an external path, we define a basic, functional Button component
+// here using Tailwind to ensure the application runs and styles correctly.
+const Button = ({ children, className = "", size = "md", variant = "default", ...props }) => {
+  // Base styling for all buttons
+  let baseClasses = "font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 whitespace-nowrap";
+  let sizeClasses = "";
+  let variantClasses = "";
+
+  // Size variations
+  switch (size) {
+    case "lg":
+      sizeClasses = "px-6 py-3 text-base";
+      break;
+    case "sm":
+      sizeClasses = "px-3 py-1 text-sm";
+      break;
+    default:
+      sizeClasses = "px-4 py-2 text-sm";
+  }
+
+  // Variant variations
+  switch (variant) {
+    case "outline":
+      variantClasses = "bg-transparent border border-border hover:bg-muted text-foreground";
+      break;
+    default:
+      // Default styling matches the primary button color from the config
+      variantClasses = "bg-primary text-primary-foreground hover:bg-primary/90";
+  }
+
+  // Merge all classes, prioritizing the user's provided className last for overrides
+  return (
+    <button
+      className={`${baseClasses} ${sizeClasses} ${variantClasses} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+// --- End Mock Button Component Definition ---
+
+
+// Component to simulate the new secure, data-rich dashboard for the Hero section preview
+const DashboardPreview = () => {
+  return (
+    <div className="relative h-auto rounded-xl overflow-hidden border border-border bg-card shadow-2xl transition-all duration-500 hover:shadow-primary/50 text-foreground">
+      
+      {/* Dashboard Header */}
+      <div className="flex justify-between items-center p-6 border-b border-border">
+        <div className="text-left">
+          <h2 className="text-2xl font-bold">Good morning, Ronald.</h2>
+          {/* Note: muted-foreground kept here for subtle secondary text */}
+          <p className="text-sm text-muted-foreground">Here's your health overview for today</p>
+        </div>
+        <Bell className="w-6 h-6 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+        {/* Upcoming Appointments Card */}
+        <div className="p-6 rounded-lg border border-border bg-background shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <Calendar className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold">Upcoming Appointments</h3>
+          </div>
+          {/* Note: muted-foreground kept here for subtle secondary text */}
+          <p className="text-sm text-muted-foreground mb-4">Your scheduled visits</p>
+
+          <div className="space-y-4">
+            {/* Appointment 1 */}
+            <div className="border border-border rounded-md p-4">
+              <p className="font-medium">Dr. Evelyn Reed</p>
+              <p className="text-sm text-muted-foreground">St. Jude's Hospital</p>
+              <div className="flex items-center text-sm text-muted-foreground mt-2">
+                <Clock className="w-4 h-4 mr-1" />
+                <span>November 15, 2025</span>
+                <span className="mx-2">•</span>
+                <span>2:00 PM</span>
+              </div>
+            </div>
+
+            {/* Appointment 2 */}
+            <div className="border border-border rounded-md p-4">
+              <p className="font-medium">Dr. Michael Chen</p>
+              <p className="text-sm text-muted-foreground">City Medical Center</p>
+              <div className="flex items-center text-sm text-muted-foreground mt-2">
+                <Clock className="w-4 h-4 mr-1" />
+                <span>November 22, 2025</span>
+                <span className="mx-2">•</span>
+                <span>10:30 AM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Latest Activity Card */}
+        <div className="p-6 rounded-lg border border-border bg-background shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            {/* Using accent color for Zap/Activity */}
+            <Zap className="w-5 h-5 text-accent" />
+            <h3 className="text-lg font-semibold">Latest Activity</h3>
+          </div>
+          {/* Note: muted-foreground kept here for subtle secondary text */}
+          <p className="text-sm text-muted-foreground mb-4">Recent updates to your account</p>
+
+          <div className="space-y-4">
+            {/* Activity Item 1 */}
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
+              <div>
+                <p className="font-medium">New lab result added from City Clinic</p>
+                <p className="text-sm text-muted-foreground">Oct 30, 2025</p>
+              </div>
+            </div>
+
+            {/* Activity Item 2 */}
+            <div className="flex items-start gap-3">
+              <Shield className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
+              <div>
+                <p className="font-medium">Dr. Smith's access request is pending</p>
+                <p className="text-sm text-muted-foreground">Oct 28, 2025</p>
+              </div>
+            </div>
+
+            {/* Activity Item 3 */}
+            <div className="flex items-start gap-3">
+              <Lock className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
+              <div>
+                <p className="font-medium">Your prescription was updated</p>
+                <p className="text-sm text-muted-foreground">Oct 25, 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Dashboard Footer Buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-6 pt-0">
+        <Button size="lg" className="bg-green-700 hover:bg-green-800 text-white gap-2">
+          <Eye className="w-4 h-4"/> View My Records
+        </Button>
+        <Button size="lg" className="bg-teal-600 hover:bg-teal-700 text-white gap-2">
+          <Shield className="w-4 h-4"/> Grant Access
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+
+// Component to handle the custom Tailwind config safely using dangerouslySetInnerHTML
+const TailwindConfig = () => {
+    const configScript = \`
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Standard values based on shadcn defaults (H: 214.3, S: 31.8%, L: 91.4%)
+                        border: "hsl(214.3 31.8% 91.4%)",
+                        input: "hsl(214.3 31.8% 91.4%)",
+                        ring: "hsl(222.2 84% 4.9%)",
+                        background: "hsl(0 0% 100%)",
+                        
+                        // CRITICAL FIX: Setting the main text color (foreground) to a much deeper, darker green from the image.
+                        foreground: "hsl(140 16% 20%)", 
+                        primary: {
+                            // Also aligning primary to this new dark green for consistency where used
+                            DEFAULT: "hsl(140 16% 20%)", 
+                            foreground: "hsl(0 0% 100%)",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(210 40% 96.1%)",
+                            foreground: "hsl(222.2 47.4% 11.2%)",
+                        },
+                        // Accent color for a nice contrast (teal)
+                        accent: {
+                            DEFAULT: "hsl(175 68% 40%)",
+                            foreground: "hsl(222.2 47.4% 11.2%)",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(210 40% 96.1%)",
+                            // Keeping muted slightly lighter for contrast against foreground
+                            foreground: "hsl(215.4 16.3% 46.9%)", 
+                        },
+                        card: {
+                            DEFAULT: "hsl(0 0% 100%)",
+                            // Card text matches the main foreground
+                            foreground: "hsl(140 16% 20%)", 
+                        },
+                    },
+                    borderRadius: {
+                      lg: '0.5rem',
+                      md: 'calc(0.5rem - 2px)',
+                      sm: 'calc(0.5rem - 4px)',
+                    },
+                },
+            },
+        };
+    \`;
+
+    // The script below loads the Tailwind CDN and config, which must be executed in the browser environment.
+    // Since we are now inside a Babel script block, we must manually inject the scripts.
+    React.useEffect(() => {
+        const loadTailwind = () => {
+            if (window.tailwind) {
+                // Execute config if Tailwind is loaded
+                eval(configScript);
+            } else {
+                // If not loaded, attach event listener
+                const script = document.createElement('script');
+                script.src = 'https://cdn.tailwindcss.com';
+                script.onload = () => {
+                    eval(configScript);
+                };
+                document.head.appendChild(script);
+            }
+        };
+
+        // Check if Tailwind is already loaded (though unlikely on first render)
+        loadTailwind();
+    }, []);
+
+    // This component renders nothing but handles the side-effect of script loading
+    return null;
+};
+
+
+export default function App() {
+  
+  return (
+    <React.StrictMode>
+      {/* Configuration component to load Tailwind and custom config */}
+      <TailwindConfig />
+      <div className="min-h-screen bg-background text-foreground font-sans">
+        
+        {/* Navigation */}
+        <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold">
+                V
+              </div>
+              <span className="text-xl font-bold">Vitalis</span>
+            </div>
+            <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+              <a href="#features" className="hover:text-primary transition-colors">
+                Features
+              </a>
+              <a href="#benefits" className="hover:text-primary transition-colors">
+                Benefits
+              </a>
+              <a href="#trust" className="hover:text-primary transition-colors">
+                Trusted By
+              </a>
+              <a href="#Documentation" className="hover:text-primary transition-colors">
+                Documentation
+              </a>
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Note: using the mock Button defined above */}
+              <Button variant="outline" className="text-sm">Sign In</Button>
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 text-sm">Get Started</Button>
+            </div>
+          </div>
+        </nav>
+
+        {/* Hero Section */}
+        <section className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-block mb-4 px-3 py-1 bg-primary/10 border border-primary/30 rounded-full">
+              <span className="text-sm font-medium text-primary">Your Health, Your Data, Your Control</span>
+            </div>
+
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-balance">
+              Healthcare Reimagined with{" "}
+              {/* The primary color is now the dark green */}
+              <span className="text-primary">Blockchain</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-balance">
+              Take complete control of your medical records. Book appointments seamlessly. Manage your digital health
+              identity with our blockchain-powered DID wallet. Grant and revoke access with one click.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
+                Launch App <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button size="lg" variant="outline" className="gap-2 bg-transparent">
+                Watch Demo <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+            
+            {/* Dashboard Preview Component */}
+            <DashboardPreview />
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="px-4 sm:px-6 lg:px-8 py-20">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-4">Powerful Features</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Everything you need to manage your health data securely and independently
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="p-8 rounded-xl border border-border bg-card shadow-lg hover:shadow-xl hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Calendar className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Smart Appointments</h3>
+                <p className="text-muted-foreground mb-4">
+                  Book appointments at available hospitals in real-time. View doctor availability, specialties, and
+                  receive instant confirmations.
+                </p>
+                <div className="text-sm text-primary font-medium flex items-center gap-1">
+                  Learn more <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/>
+                </div>
+              </div>
+
+              <div className="p-8 rounded-xl border border-border bg-card shadow-lg hover:shadow-xl hover:border-accent/50 transition-all duration-300 group cursor-pointer">
+                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Shield className="w-6 h-6 text-accent" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">DID Health Wallet</h3>
+                <p className="text-muted-foreground mb-4">
+                  Store your unique Decentralized Identifier. Manage verifiable credentials, vaccination records, and
+                  health insurance documents.
+                </p>
+                <div className="text-sm text-accent font-medium flex items-center gap-1">
+                  Learn more <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/>
+                </div>
+              </div>
+
+              <div className="p-8 rounded-xl border border-border bg-card shadow-lg hover:shadow-xl hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Lock className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Data Consent Control</h3>
+                <p className="text-muted-foreground mb-4">
+                  You decide who accesses your medical records. Grant or revoke access to healthcare providers, insurers,
+                  and researchers instantly.
+                </p>
+                <div className="text-sm text-primary font-medium flex items-center gap-1">
+                  Learn more <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section id="benefits" className="px-4 sm:px-6 lg:px-8 py-20 bg-card/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-4xl sm:text-5xl font-bold mb-6">Why Choose Vitalis?</h2>
+                <div className="space-y-4">
+                  {[
+                    {
+                      title: "Complete Privacy",
+                      desc: "Your data stays yours. No central authority controls your health information.",
+                    },
+                    {
+                      title: "Instant Access Revocation",
+                      desc: "Remove access to any healthcare provider or organization with a single click.",
+                    },
+                    {
+                      title: "Interoperable Records",
+                      desc: "Your medical history follows you across hospitals, clinics, and providers seamlessly.",
+                    },
+                    {
+                      title: "Verifiable Credentials",
+                      desc: "Share proof of vaccination, insurance, or medical history with cryptographic verification.",
+                    },
+                    {
+                      title: "24/7 Availability",
+                      desc: "Access your records anytime, anywhere. Book appointments around the clock.",
+                    },
+                    {
+                      title: "Enterprise Security",
+                      desc: "Blockchain-backed security ensures your health data is immutable and tamper-proof.",
+                    },
+                  ].map((benefit, idx) => (
+                    <div key={idx} className="flex gap-3 items-start">
+                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold mb-1">{benefit.title}</h4>
+                        <p className="text-muted-foreground text-sm">{benefit.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-6 pt-10 md:pt-0">
+                <div className="p-6 rounded-xl border border-border bg-background/50 backdrop-blur shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Zap className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2">Lightning Fast</h4>
+                      <p className="text-sm text-muted-foreground">Access records instantly with blockchain's speed and efficiency</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-xl border border-border bg-background/50 backdrop-blur shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <Users className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2">Patient Empowered</h4>
+                      <p className="text-sm text-muted-foreground">
+                        You maintain full control and ownership of your digital health identity and records
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-xl border border-border bg-background/50 backdrop-blur shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Shield className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2">Cryptographically Secure</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Enterprise-grade, blockchain-secured encryption protects your information from compromise
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Section */}
+        <section id="trust" className="px-4 sm:px-6 lg:px-8 py-20">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-4">Trusted by Healthcare Leaders</h2>
+              <p className="text-lg text-muted-foreground">Hospitals, clinics, and insurance companies trust Vitalis to secure their data exchange</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {["St. Jude's Hospital", "City Medical Center", "MyHealth Insurance", "Global Airlines"].map((org, idx) => (
+                <div
+                  key={idx}
+                  className="h-24 rounded-lg border border-border bg-card/50 flex items-center justify-center hover:border-primary/50 transition-colors shadow-lg"
+                >
+                  <p className="text-sm font-medium text-muted-foreground text-center px-4">{org}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-r from-primary/10 to-accent/10 border-y border-border">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">Ready to Take Control?</h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Join thousands of patients who are securing their health data today and experiencing the power of DID technology
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg transition-shadow">
+                Get Started Now
+              </Button>
+              <Button size="lg" variant="outline" className="shadow-md hover:shadow-lg transition-shadow">
+                Schedule Demo
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="px-4 sm:px-6 lg:px-8 py-12 border-t border-border">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-6 h-6 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+                    V
+                  </div>
+                  <span className="font-bold">Vitalis</span>
+                </div>
+                <p className="text-sm text-muted-foreground">Blockchain healthcare for everyone</p>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-3">Product</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <a href="#features" className="hover:text-primary transition-colors">
+                      Features
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Pricing
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Security
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-3">Company</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Blog
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-3">Legal</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Privacy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Terms
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Compliance
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
+              <p>&copy; 2025 Vitalis. All rights reserved.</p>
+              <div className="flex gap-6 mt-4 sm:mt-0">
+                <a href="#" className="hover:text-primary transition-colors">
+                  Twitter
+                </a>
+                <a href="#" className="hover:text-primary transition-colors">
+                  LinkedIn
+                </a>
+                <a href="#" className="hover:text-primary transition-colors">
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </React.StrictMode>
+  )
+}
+
+// 3. Render the App component into the root element
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
