@@ -4,6 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vitalis - Blockchain Healthcare</title>
+    
+    <!-- FIX: 1. Load Tailwind CDN first -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FIX: 2. Inject Custom Tailwind Config IMMEDIATELY AFTER LOADING THE CDN -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Standard values based on shadcn defaults (H: 214.3, S: 31.8%, L: 91.4%)
+                        border: "hsl(214.3 31.8% 91.4%)",
+                        input: "hsl(214.3 31.8% 91.4%)",
+                        ring: "hsl(222.2 84% 4.9%)",
+                        background: "hsl(0 0% 100%)",
+                        
+                        // CRITICAL FIX: Setting the main text color (foreground) to a much deeper, darker green from the image.
+                        foreground: "hsl(140 16% 20%)", 
+                        primary: {
+                            // Also aligning primary to this new dark green for consistency where used
+                            DEFAULT: "hsl(140 16% 20%)", 
+                            foreground: "hsl(0 0% 100%)",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(210 40% 96.1%)",
+                            foreground: "hsl(222.2 47.4% 11.2%)",
+                        },
+                        // Accent color for a nice contrast (teal)
+                        accent: {
+                            DEFAULT: "hsl(175 68% 40%)",
+                            foreground: "hsl(222.2 47.4% 11.2%)",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(210 40% 96.1%)",
+                            // Keeping muted slightly lighter for contrast against foreground
+                            foreground: "hsl(215.4 16.3% 46.9%)", 
+                        },
+                        card: {
+                            DEFAULT: "hsl(0 0% 100%)",
+                            // Card text matches the main foreground
+                            foreground: "hsl(140 16% 20%)", 
+                        },
+                    },
+                    borderRadius: {
+                      lg: '0.5rem',
+                      md: 'calc(0.5rem - 2px)',
+                      sm: 'calc(0.5rem - 4px)',
+                    },
+                },
+            },
+        };
+    </script>
+    
     <!-- Load React and Babel for JSX in the browser -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -183,89 +236,10 @@ const DashboardPreview = () => {
 };
 
 
-// Component to handle the custom Tailwind config safely using dangerouslySetInnerHTML
-const TailwindConfig = () => {
-    const configScript = \`
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // Standard values based on shadcn defaults (H: 214.3, S: 31.8%, L: 91.4%)
-                        border: "hsl(214.3 31.8% 91.4%)",
-                        input: "hsl(214.3 31.8% 91.4%)",
-                        ring: "hsl(222.2 84% 4.9%)",
-                        background: "hsl(0 0% 100%)",
-                        
-                        // CRITICAL FIX: Setting the main text color (foreground) to a much deeper, darker green from the image.
-                        foreground: "hsl(140 16% 20%)", 
-                        primary: {
-                            // Also aligning primary to this new dark green for consistency where used
-                            DEFAULT: "hsl(140 16% 20%)", 
-                            foreground: "hsl(0 0% 100%)",
-                        },
-                        secondary: {
-                            DEFAULT: "hsl(210 40% 96.1%)",
-                            foreground: "hsl(222.2 47.4% 11.2%)",
-                        },
-                        // Accent color for a nice contrast (teal)
-                        accent: {
-                            DEFAULT: "hsl(175 68% 40%)",
-                            foreground: "hsl(222.2 47.4% 11.2%)",
-                        },
-                        muted: {
-                            DEFAULT: "hsl(210 40% 96.1%)",
-                            // Keeping muted slightly lighter for contrast against foreground
-                            foreground: "hsl(215.4 16.3% 46.9%)", 
-                        },
-                        card: {
-                            DEFAULT: "hsl(0 0% 100%)",
-                            // Card text matches the main foreground
-                            foreground: "hsl(140 16% 20%)", 
-                        },
-                    },
-                    borderRadius: {
-                      lg: '0.5rem',
-                      md: 'calc(0.5rem - 2px)',
-                      sm: 'calc(0.5rem - 4px)',
-                    },
-                },
-            },
-        };
-    \`;
-
-    // The script below loads the Tailwind CDN and config, which must be executed in the browser environment.
-    // Since we are now inside a Babel script block, we must manually inject the scripts.
-    React.useEffect(() => {
-        const loadTailwind = () => {
-            if (window.tailwind) {
-                // Execute config if Tailwind is loaded
-                eval(configScript);
-            } else {
-                // If not loaded, attach event listener
-                const script = document.createElement('script');
-                script.src = 'https://cdn.tailwindcss.com';
-                script.onload = () => {
-                    eval(configScript);
-                };
-                document.head.appendChild(script);
-            }
-        };
-
-        // Check if Tailwind is already loaded (though unlikely on first render)
-        loadTailwind();
-    }, []);
-
-    // This component renders nothing but handles the side-effect of script loading
-    return null;
-};
-
-
 export default function App() {
   
   return (
     <React.StrictMode>
-      {/* Configuration component to load Tailwind and custom config */}
-      <TailwindConfig />
       <div className="min-h-screen bg-background text-foreground font-sans">
         
         {/* Navigation */}
